@@ -1,100 +1,107 @@
 var man;
 var bad = [];
 var bad2 = [];
-var sceneNum = 0;
-let timer = 22 
+var sceneNum = 3;
+let timer = 15
 //finish up hit function https://www.youtube.com/watch?v=l0HoJHc-63Q&t=1027s
+function preload() {
+  img = loadImage('hand.png');
+  img2 = loadImage('forest.jpg');
+}
+
 function setup() {
   createCanvas(640, 360);
+  objGen();
+}
+
+function objGen(){
   man = new Person();
-  for (let i = 0; i < 100;   i++) {
+  for (let i = 0; i < 100; i++) {
     bad[i] = new obstacle();
   }
-  for (let l = 0; l < 100;   l++) {
+  for (let l = 0; l < 100; l++) {
     bad2[l] = new obstacle2();
+  }
 }
-}
-  
+
 function keyPressed() {
   if (key == ' ') {
     let force = createVector(0, -50);
     man.applyForce(force);
-  } else if (key == 's') {
-    sceneNum++;
-
   }
+}
 
-  if (sceneNum > 2) {
-    sceneNum = 0;
-  }
+if (sceneNum > 2) {
+  sceneNum = 0;
 }
 
 function mouseClicked() {
   if (mouseX >= 230 && mouseX <= 430 && mouseY >= 250 && mouseY <= 300)
-    if (sceneNum===0) {
-    scene1();
-  }
-  else if (sceneNum===2) {
+    if (sceneNum === 0) {
+      scene1();
+    }
+  else if (sceneNum === 2) {
     scene0();
-  }
-  else if (sceneNum===3) {
+  } else if (sceneNum === 3) {
     scene0();
   }
 }
 
 
 function draw() {
-  
-  if (sceneNum === 0){
+
+  if (sceneNum === 0) {
+    objGen();
     scene0();
   } else if (sceneNum === 1) {
     scene1();
-    fill(0,255,255);
+    fill(0, 255, 255);
     textSize(35);
     text(timer, 400, 50);
-    
+
     if (frameCount % 60 == 0 && timer > 0) {
-    timer --;
-      man.score --;
-    
+      timer--;
+      man.score--;
+
     }
-    if (/*timer == 0 &&*/ man.score >= 10) {
+    if ( /*timer == 0 &&*/ man.score >= 100) {
       sceneNum = 2;
     }
     if (timer == 0 && man.score < 100) {
       sceneNum = 3;
     }
-   
+
 
   } else if (sceneNum === 2) {
     scene2();
+  } else if (sceneNum === 3) {
+    scene3();
   }
-    else if (sceneNum === 3) {
-      scene3();
-    }
 }
 
 
 
 function scene0() {
-  sceneNum=0;
+  sceneNum = 0;
   background("black");
   textSize(50);
-  fill(255, 255, 0);
+  fill(0, 154, 255);
   text("The Adventure of Blocc Boi", 20, 100);
   textSize(20);
-  text("Press the space bar to jump", 190, 175);
-  text("Collect 500 as you can in 22 seconds", 150, 235);
-  text("work against the clock");
+  text("Press the space bar to jump", 200, 340);
+  text("Collect 500 berries", 250, 235);
+  text("work against the clock", 230, 175);
   fill(252, 252, 252);
-  rect( 230, 250, 200, 50);
+  rect(230, 250, 200, 50);
   fill(0, 0, 0);
   text("Click Here to Start", 240, 280);
+  image(img, 350, 110, 300, 300);
 }
 
 function scene1() {
-  sceneNum=1;
+  sceneNum = 1;
   background(51);
+  image(img2, 0, 0, 640, 360);
   translate(-man.pos.x + 100, 0);
   let gravity = createVector(0, 3)
 
@@ -102,14 +109,14 @@ function scene1() {
   man.update();
   man.display();
   man.edges();
-  
+
 
   //Silly hard code or obstacle
   //fill(50, 30, 200);
   //rect(200, height - 50, 100, 100);
 
-  
-  
+
+
   for (i = 0; i < 100; i++) {
     if (man.hits(bad[i])) {
       console.log("Game Over!");
@@ -134,33 +141,32 @@ function scene1() {
 }
 
 function scene2() {
-  sceneNum=2;
-  timer=22;
-  man.score=0;
+  sceneNum = 2;
+  timer = 15;
+  man.score = 0;
 
   background("black");
   fill(255, 255, 0);
   textSize(40);
   text("YOU WIN!!", 200, 150);
-  fill(255,255,255);
+  fill(255, 255, 255);
   textSize("30");
   fill(252, 252, 252);
-  rect( 230, 250, 200, 50);
+  rect(230, 250, 200, 50);
   fill(0, 0, 0);
   textSize(20);
   text("Press to Play again", 250, 280);
 }
 
 function scene3() {
-  sceneNum=3;
-  timer=22
-  man.score=0;
+  sceneNum = 3;
+  timer = 15;
+  man.score = 0;
   background("black");
   fill(252, 252, 252);
-  rect( 230, 250, 200, 50);
+  rect(230, 250, 200, 50);
   fill('red');
-  textSize (50);
-  text("YOU LOSE", 200, 200)
-  
-  
+  textSize(50);
+  text("YOU LOSE", 200, 200);
+  text("title page", 230, 290);
 }
